@@ -1,18 +1,33 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
 
 type Board [3][3]string
 
 type Game struct {
 	board       Board
 	currentPlayer string
+	vsComputer   bool
 }
 
 func NewGame() *Game {
 	return &Game{
 		board:       NewBoard(),
 		currentPlayer: "X",
+		vsComputer:   false,
+	}
+}
+
+func NewGameVsComputer() *Game {
+	rand.Seed(time.Now().UnixNano())
+	return &Game{
+		board:       NewBoard(),
+		currentPlayer: "X",
+		vsComputer:   true,
 	}
 }
 
@@ -103,4 +118,36 @@ func (g *Game) IsDraw() bool {
 
 func (g *Game) IsGameOver() bool {
 	return g.CheckWinner() != "" || g.IsDraw()
+}
+
+func (g *Game) GetAvailableMoves() [][2]int {
+	moves := make([][2]int, 0)
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 3; j++ {
+			if g.board[i][j] == " " {
+				moves = append(moves, [2]int{i, j})
+			}
+		}
+	}
+	return moves
+}
+
+func (g *Game) MakeComputerMove() {
+	moves := g.GetAvailableMoves()
+	if len(moves) == 0 {
+		return
+	}
+	
+	// Simple AI: pick a random available move
+	randomIndex := rand.Intn(len(moves))
+	move := moves[randomIndex]
+	g.board[move[0]][move[1]] = g.currentPlayer
+	
+	fmt.Printf("Computer plays: %d %d\n", move[0]+1, move[1]+1)
+	
+	if g.currentPlayer == "X" {
+		g.currentPlayer = "O"
+	} else {
+		g.currentPlayer = "X"
+	}
 }

@@ -13,34 +13,51 @@ func main() {
 	fmt.Println("==========")
 	fmt.Println()
 
-	game := NewGame()
 	scanner := bufio.NewScanner(os.Stdin)
+	
+	fmt.Print("Play against computer? (y/n): ")
+	scanner.Scan()
+	vsComputer := strings.ToLower(scanner.Text()) == "y"
+	
+	var game *Game
+	if vsComputer {
+		game = NewGameVsComputer()
+		fmt.Println("\nYou are X, computer is O")
+	} else {
+		game = NewGame()
+	}
 
 	for {
 		game.board.Display()
-		fmt.Printf("\nPlayer %s's turn\n", game.currentPlayer)
-		fmt.Print("Enter row and column (e.g., 1 2): ")
 		
-		scanner.Scan()
-		input := scanner.Text()
-		parts := strings.Fields(input)
-		
-		if len(parts) != 2 {
-			fmt.Println("Invalid input! Please enter row and column separated by space.")
-			continue
-		}
-		
-		row, err1 := strconv.Atoi(parts[0])
-		col, err2 := strconv.Atoi(parts[1])
-		
-		if err1 != nil || err2 != nil {
-			fmt.Println("Invalid input! Please enter numbers.")
-			continue
-		}
-		
-		if !game.MakeMove(row, col) {
-			fmt.Println("Invalid move! Try again.")
-			continue
+		if game.vsComputer && game.currentPlayer == "O" {
+			fmt.Println("\nComputer's turn...")
+			game.MakeComputerMove()
+		} else {
+			fmt.Printf("\nPlayer %s's turn\n", game.currentPlayer)
+			fmt.Print("Enter row and column (e.g., 1 2): ")
+			
+			scanner.Scan()
+			input := scanner.Text()
+			parts := strings.Fields(input)
+			
+			if len(parts) != 2 {
+				fmt.Println("Invalid input! Please enter row and column separated by space.")
+				continue
+			}
+			
+			row, err1 := strconv.Atoi(parts[0])
+			col, err2 := strconv.Atoi(parts[1])
+			
+			if err1 != nil || err2 != nil {
+				fmt.Println("Invalid input! Please enter numbers.")
+				continue
+			}
+			
+			if !game.MakeMove(row, col) {
+				fmt.Println("Invalid move! Try again.")
+				continue
+			}
 		}
 		
 		if game.IsGameOver() {
