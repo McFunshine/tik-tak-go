@@ -63,3 +63,44 @@ func (g *Game) IsValidMove(row, col int) bool {
 	}
 	return g.board[row-1][col-1] == " "
 }
+
+func (g *Game) CheckWinner() string {
+	// Check rows
+	for i := 0; i < 3; i++ {
+		if g.board[i][0] != " " && g.board[i][0] == g.board[i][1] && g.board[i][1] == g.board[i][2] {
+			return g.board[i][0]
+		}
+	}
+	
+	// Check columns
+	for j := 0; j < 3; j++ {
+		if g.board[0][j] != " " && g.board[0][j] == g.board[1][j] && g.board[1][j] == g.board[2][j] {
+			return g.board[0][j]
+		}
+	}
+	
+	// Check diagonals
+	if g.board[0][0] != " " && g.board[0][0] == g.board[1][1] && g.board[1][1] == g.board[2][2] {
+		return g.board[0][0]
+	}
+	if g.board[0][2] != " " && g.board[0][2] == g.board[1][1] && g.board[1][1] == g.board[2][0] {
+		return g.board[0][2]
+	}
+	
+	return ""
+}
+
+func (g *Game) IsDraw() bool {
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 3; j++ {
+			if g.board[i][j] == " " {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+func (g *Game) IsGameOver() bool {
+	return g.CheckWinner() != "" || g.IsDraw()
+}

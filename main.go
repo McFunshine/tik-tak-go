@@ -42,5 +42,16 @@ func main() {
 			fmt.Println("Invalid move! Try again.")
 			continue
 		}
+		
+		if game.IsGameOver() {
+			game.board.Display()
+			winner := game.CheckWinner()
+			if winner != "" {
+				fmt.Printf("\nPlayer %s wins!\n", winner)
+			} else {
+				fmt.Println("\nIt's a draw!")
+			}
+			break
+		}
 	}
 }
