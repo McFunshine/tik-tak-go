@@ -71,4 +71,11 @@ func main() {
 			break
 		}
 	}
+	
+	fmt.Println("\nGame Over!")
+	fmt.Print("Play again? (y/n): ")
+	scanner.Scan()
+	if strings.ToLower(scanner.Text()) == "y" {
+		main()
+	}
 }

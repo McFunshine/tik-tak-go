@@ -40,16 +40,14 @@ func NewBoard() Board {
 }
 
 func (b Board) Display() {
-	fmt.Println("\n  1   2   3")
-	fmt.Println("1   |   |   ")
-	fmt.Printf("  %s | %s | %s \n", b[0][0], b[0][1], b[0][2])
-	fmt.Println(" ___|___|___")
-	fmt.Println("2   |   |   ")
-	fmt.Printf("  %s | %s | %s \n", b[1][0], b[1][1], b[1][2])
-	fmt.Println(" ___|___|___")
-	fmt.Println("3   |   |   ")
-	fmt.Printf("  %s | %s | %s \n", b[2][0], b[2][1], b[2][2])
-	fmt.Println("    |   |   ")
+	fmt.Println("\n    1   2   3")
+	fmt.Println("  +---+---+---+")
+	fmt.Printf("1 | %s | %s | %s |\n", b[0][0], b[0][1], b[0][2])
+	fmt.Println("  +---+---+---+")
+	fmt.Printf("2 | %s | %s | %s |\n", b[1][0], b[1][1], b[1][2])
+	fmt.Println("  +---+---+---+")
+	fmt.Printf("3 | %s | %s | %s |\n", b[2][0], b[2][1], b[2][2])
+	fmt.Println("  +---+---+---+")
 }
 
 func (g *Game) MakeMove(row, col int) bool {
