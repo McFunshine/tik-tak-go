@@ -138,12 +138,11 @@ func (g *Game) MakeComputerMove() {
 		return
 	}
 	
-	// Simple AI: pick a random available move
-	randomIndex := rand.Intn(len(moves))
-	move := moves[randomIndex]
-	g.board[move[0]][move[1]] = g.currentPlayer
+	// Use minimax algorithm for optimal play
+	bestMove := g.GetBestMove()
+	g.board[bestMove[0]][bestMove[1]] = g.currentPlayer
 	
-	fmt.Printf("Computer plays: %d %d\n", move[0]+1, move[1]+1)
+	fmt.Printf("Computer plays: %d %d\n", bestMove[0]+1, bestMove[1]+1)
 	
 	if g.currentPlayer == "X" {
 		g.currentPlayer = "O"
