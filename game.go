@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
 )
 
 // Board represents the 3x3 game board.
@@ -27,7 +25,6 @@ func NewGame() *Game {
 
 // NewGameVsComputer creates a new game instance with computer opponent.
 func NewGameVsComputer() *Game {
-	rand.Seed(time.Now().UnixNano())
 	return &Game{
 		board:       NewBoard(),
 		currentPlayer: "X",
