@@ -1,5 +1,7 @@
 package main
 
+// Minimax implements the minimax algorithm to evaluate game positions.
+// Returns 1 if O wins, -1 if X wins, 0 for a draw.
 func (g *Game) Minimax(isMaximizing bool, depth int) int {
 	// Check terminal states
 	winner := g.CheckWinner()
@@ -57,6 +59,8 @@ func (g *Game) evaluateMin() int {
 	return bestScore
 }
 
+// GetBestMove calculates the optimal move for the computer player using minimax.
+// Returns the row and column indices of the best move.
 func (g *Game) GetBestMove() [2]int {
 	bestScore := -1000
 	bestMove := [2]int{-1, -1}

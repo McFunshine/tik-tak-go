@@ -6,14 +6,17 @@ import (
 	"time"
 )
 
+// Board represents the 3x3 game board.
 type Board [3][3]string
 
+// Game represents the game state including the board, current player, and game mode.
 type Game struct {
 	board       Board
 	currentPlayer string
 	vsComputer   bool
 }
 
+// NewGame creates a new two-player game instance.
 func NewGame() *Game {
 	return &Game{
 		board:       NewBoard(),
@@ -22,6 +25,7 @@ func NewGame() *Game {
 	}
 }
 
+// NewGameVsComputer creates a new game instance with computer opponent.
 func NewGameVsComputer() *Game {
 	rand.Seed(time.Now().UnixNano())
 	return &Game{
@@ -31,6 +35,7 @@ func NewGameVsComputer() *Game {
 	}
 }
 
+// NewBoard creates a new empty game board.
 func NewBoard() Board {
 	return Board{
 		{" ", " ", " "},
@@ -39,6 +44,7 @@ func NewBoard() Board {
 	}
 }
 
+// Display prints the current board state to the console.
 func (b Board) Display() {
 	fmt.Println("\n    1   2   3")
 	fmt.Println("  +---+---+---+")
@@ -50,6 +56,8 @@ func (b Board) Display() {
 	fmt.Println("  +---+---+---+")
 }
 
+// MakeMove attempts to place the current player's mark at the specified position.
+// Returns true if the move was valid and successful, false otherwise.
 func (g *Game) MakeMove(row, col int) bool {
 	if row < 1 || row > 3 || col < 1 || col > 3 {
 		return false
@@ -70,6 +78,7 @@ func (g *Game) MakeMove(row, col int) bool {
 	return true
 }
 
+// IsValidMove checks if a move is valid at the specified position.
 func (g *Game) IsValidMove(row, col int) bool {
 	if row < 1 || row > 3 || col < 1 || col > 3 {
 		return false
@@ -77,6 +86,8 @@ func (g *Game) IsValidMove(row, col int) bool {
 	return g.board[row-1][col-1] == " "
 }
 
+// CheckWinner determines if there is a winner.
+// Returns "X" or "O" if there is a winner, empty string otherwise.
 func (g *Game) CheckWinner() string {
 	// Check rows
 	for i := 0; i < 3; i++ {
@@ -103,6 +114,7 @@ func (g *Game) CheckWinner() string {
 	return ""
 }
 
+// IsDraw checks if the game is a draw (board full with no winner).
 func (g *Game) IsDraw() bool {
 	for i := 0; i < 3; i++ {
 		for j := 0; j < 3; j++ {
@@ -114,10 +126,12 @@ func (g *Game) IsDraw() bool {
 	return true
 }
 
+// IsGameOver checks if the game has ended (either by win or draw).
 func (g *Game) IsGameOver() bool {
 	return g.CheckWinner() != "" || g.IsDraw()
 }
 
+// GetAvailableMoves returns a slice of all empty board positions.
 func (g *Game) GetAvailableMoves() [][2]int {
 	moves := make([][2]int, 0)
 	for i := 0; i < 3; i++ {
@@ -130,6 +144,7 @@ func (g *Game) GetAvailableMoves() [][2]int {
 	return moves
 }
 
+// MakeComputerMove executes the computer's turn using the minimax algorithm.
 func (g *Game) MakeComputerMove() {
 	moves := g.GetAvailableMoves()
 	if len(moves) == 0 {
